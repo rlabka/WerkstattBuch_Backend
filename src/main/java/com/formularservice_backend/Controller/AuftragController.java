@@ -5,13 +5,14 @@ import com.formularservice_backend.Service.AuftragService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/auftrag")
+
 public class AuftragController {
 
     private final AuftragService auftragService;
@@ -22,8 +23,14 @@ public class AuftragController {
     }
 
     @PostMapping("/neu")
-    public ResponseEntity<String> createAuftrag(@RequestBody Auftrag auftrag) {
+    public ResponseEntity<Auftrag> createAuftrag(@RequestBody Auftrag auftrag) {
         auftragService.saveAuftrag(auftrag);
-        return new ResponseEntity<>("Auftrag erfolgreich erstellt", HttpStatus.CREATED);
+        return new ResponseEntity<>(auftrag, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Auftrag>> getAll() {
+        List<Auftrag> auftraege = auftragService.getallAuftraege();
+        return new ResponseEntity<>(auftraege, HttpStatus.OK);
     }
 }

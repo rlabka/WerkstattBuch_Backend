@@ -1,15 +1,18 @@
 package com.formularservice_backend.Model;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
+@Setter
+@Getter
 @Document(collection = "auftrag")
 public class Auftrag {
 
+    // Getter and Setter methods
     @Id
     private String id;
 
@@ -22,4 +25,5 @@ public class Auftrag {
     private Date timestamp;
 
     private Termin termin;
+
 }

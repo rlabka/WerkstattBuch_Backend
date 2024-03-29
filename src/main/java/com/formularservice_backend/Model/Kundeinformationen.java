@@ -1,16 +1,21 @@
 package com.formularservice_backend.Model;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+
+@Setter
+@Getter
 public class Kundeinformationen {
+    // Setter methods
+    // Getter methods
     private String firstName;
     private String lastName;
-    private String tel;
+    private Integer tel;
     private String email;
     private String adresse;
-    private String hausnummer;
-    private String plz;
+    private Integer hausnummer;
+    private Integer plz;
     private String stadt;
     private String auswahl;
+
 }
