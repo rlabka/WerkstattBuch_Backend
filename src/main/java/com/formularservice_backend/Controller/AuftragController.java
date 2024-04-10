@@ -24,6 +24,7 @@ public class AuftragController {
 
     @PostMapping("/neu")
     public ResponseEntity<Auftrag> createAuftrag(@RequestBody Auftrag auftrag) {
+        System.out.println("auftragtermin: "+auftrag.getTermin());
         auftragService.saveAuftrag(auftrag);
         return new ResponseEntity<>(auftrag, HttpStatus.CREATED);
     }

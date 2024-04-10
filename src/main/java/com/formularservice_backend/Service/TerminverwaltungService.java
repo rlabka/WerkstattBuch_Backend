@@ -74,7 +74,7 @@ public class TerminverwaltungService {
             for (TerminUhrzeit terminUhrzeit : terminverwaltung.getTermine()) {
                 LocalTime terminTime = LocalTime.parse(terminUhrzeit.getUhrzeit());
                 if (terminTime.isBefore(currentTime)) {
-                    terminUhrzeit.setStatus(false);
+                    terminUhrzeit.setStatus(true);
                 }
             }
             terminverwaltungRepository.save(terminverwaltung);
@@ -86,4 +86,54 @@ public class TerminverwaltungService {
         this.deactivatePastTermine();
     }
 
+
+    public void setNextThreeTermineTrue(String datum, String uhrzeit,String auswahl) {
+        datum=reformatDatum(datum);
+
+        System.out.println("datum ist: "+datum);
+
+        int lastindex=2;
+        Terminverwaltung terminverwaltung = terminverwaltungRepository.findByDatum(datum);
+        if (auswahl.equals("Räderwechseln")){
+            lastindex=3;
+        }
+        if (terminverwaltung != null) {
+            List<TerminUhrzeit> termine = terminverwaltung.getTermine();
+            int index = findIndexByUhrzeit(termine, uhrzeit);
+            if (index != -1 && index + lastindex < termine.size()) {
+                for (int i = index; i <= index + lastindex; i++) {
+                    termine.get(i).setStatus(true);
+                }
+                terminverwaltungRepository.save(terminverwaltung);
+            }
+        }
+    }
+
+    public static String reformatDatum(String inputDatum) {
+        // Split des Datums nach dem Komma, um die Zeitinformationen zu entfernen
+        String[] parts = inputDatum.split(", ");
+        if (parts.length < 1) {
+            // Fehlerbehandlung, falls das Datum nicht das erwartete Format hat
+            System.err.println("Ungültiges Datumsformat: " + inputDatum);
+            return inputDatum; // Rückgabe des ursprünglichen Werts, wenn das Format nicht erkannt wird
+        }
+
+        // Verwenden Sie nur den ersten Teil des geteilten Datums (vor dem Komma)
+        String reformattedDatum = parts[0];
+
+        // Konvertierung des Datums in das gewünschte Format "TT.MM.JJJJ" ohne führende Nullen
+        LocalDate date = LocalDate.parse(reformattedDatum, DateTimeFormatter.ofPattern("d.M.yyyy"));
+        reformattedDatum = date.format(DateTimeFormatter.ofPattern("d.M.yyyy"));
+
+        return reformattedDatum;
+    }
+
+    private int findIndexByUhrzeit(List<TerminUhrzeit> termine, String uhrzeit) {
+        for (int i = 0; i < termine.size(); i++) {
+            if (termine.get(i).getUhrzeit().equals(uhrzeit)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
