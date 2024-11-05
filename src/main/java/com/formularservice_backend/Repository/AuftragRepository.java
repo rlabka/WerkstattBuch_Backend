@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuftragRepository extends MongoRepository<Auftrag,String> {
+    Auftrag findByAuftragsnummer(Long auftragsnummer);
 }

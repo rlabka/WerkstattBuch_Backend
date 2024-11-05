@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -33,5 +34,18 @@ public class AuftragController {
     public ResponseEntity<List<Auftrag>> getAll() {
         List<Auftrag> auftraege = auftragService.getallAuftraege();
         return new ResponseEntity<>(auftraege, HttpStatus.OK);
+    }
+
+    @PutMapping("/{auftragsnummer}/status")
+    public ResponseEntity<Auftrag> updateAuftragStatus(@PathVariable long auftragsnummer, @RequestBody Map<String, String> statusMap) {
+        String status = statusMap.get("status");
+        System.out.println("status: "+status+"auftrag: "+auftragsnummer);
+        Auftrag updatedAuftrag = auftragService.updateAuftragStatus(auftragsnummer, status);
+
+        if (updatedAuftrag != null) {
+            return new ResponseEntity<>(updatedAuftrag, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

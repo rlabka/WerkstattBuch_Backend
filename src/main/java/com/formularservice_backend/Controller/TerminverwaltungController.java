@@ -31,7 +31,6 @@ public class TerminverwaltungController {
             return new ResponseEntity<>("Das angegebene Datum liegt in der Vergangenheit.", HttpStatus.BAD_REQUEST);
         }
 
-        // Rufen Sie den Service auf, um die Termine zu überprüfen
         Terminverwaltung terminverwaltung = terminverwaltungService.checkTermin(date);
         if (terminverwaltung == null) {
             return new ResponseEntity<>("Es wurden keine Termine für das angegebene Datum gefunden.", HttpStatus.NOT_FOUND);

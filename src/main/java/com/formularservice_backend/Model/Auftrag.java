@@ -26,4 +26,6 @@ public class Auftrag {
 
     private Termin termin;
 
+    private String status;
+
 }
